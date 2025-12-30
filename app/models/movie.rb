@@ -4,4 +4,5 @@ class Movie < ApplicationRecord
   validates :director, presence: true 
   validates :actor, presence: true 
 
+  has_one_attached :image
 end

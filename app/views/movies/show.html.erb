@@ -5,6 +5,15 @@
   <%= @movie.name %>
 </p>
 
+<strong>Image:</strong>
+<div>
+  <% if @movie.image.attached? %>
+    <%= image_tag @movie.image%>
+  <%else%>
+    <p>No image attached</p>
+  <%end%>
+</div>
+
 <p>
   <strong>Release date:</strong>
   <%= @movie.release_date %>
