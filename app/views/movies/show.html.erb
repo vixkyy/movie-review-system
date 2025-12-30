@@ -29,5 +29,25 @@
   <%= @movie.actor %>
 </p>
 
+<strong>Ratings:</strong>
+<div>
+  <% if @movie.ratings.any? %>
+    <% (1..5).each do |num|%>
+      <p><%=num%> : <%= @ratings_count[num] || 0 %> stars</p>
+    <%end%>
+  <%else%>
+    <p>No one rated yet.</p>
+  <%end%>
+</div>
+
+<strong>Add your rating</strong>
+<%= form_with model: [@movie, Rating.new] do |form| %>
+  <% (1..5).each do |num| %>
+    <%= form.radio_button :score, num %>
+    <%= num%>
+  <%end%>
+  <%= form.submit "Submit rating"%>
+<%end%>
+
 <%= link_to 'Edit', edit_movie_path(@movie) %> |
 <%= link_to 'Back', movies_path %>

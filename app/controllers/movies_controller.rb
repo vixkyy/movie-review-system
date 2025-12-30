@@ -8,6 +8,7 @@ class MoviesController < ApplicationController
 
   # GET /movies/1 or /movies/1.json
   def show
+    @ratings_count = @movie.ratings.group(:score).count
   end
 
   # GET /movies/new
