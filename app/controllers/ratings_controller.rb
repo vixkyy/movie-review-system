@@ -9,6 +9,15 @@ class RatingsController < ApplicationController
     end
   end
 
+  def update 
+    @rating = @movie.ratings.find(params[:id])
+    if @rating.update(rating_params)
+      redirect_to movie_path(@movie), notice: "Rating is updated"
+    else 
+      redirect_to movie_path(@movie), alert: "something went wrong"
+    end
+  end
+
   private 
 
   def set_movie 

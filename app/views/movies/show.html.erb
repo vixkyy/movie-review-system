@@ -39,14 +39,25 @@
     <p>No one rated yet.</p>
   <%end%>
 </div>
-
-<strong>Add your rating</strong>
-<%= form_with model: [@movie, Rating.new] do |form| %>
-  <% (1..5).each do |num| %>
-    <%= form.radio_button :score, num %>
-    <%= num%>
+<% if @movie.ratings.includes(current_user)%>
+  <p>Your Rating is <strong><%= @movie.ratings.find_by(user_id: current_user.id).score%></strong></p>
+  <% rating = @movie.ratings.find_by(user_id: current_user.id)%>
+  <%= form_with model: [@movie, rating] do |form| %>
+    <% (1..5).each do |num| %>
+      <%= form.radio_button :score, num %>
+      <%= num%>
+    <%end%>
+    <%= form.submit "Submit rating"%>
   <%end%>
-  <%= form.submit "Submit rating"%>
+<%else%>
+  <strong>Add your rating</strong>
+  <%= form_with model: [@movie, Rating.new] do |form| %>
+    <% (1..5).each do |num| %>
+      <%= form.radio_button :score, num %>
+      <%= num%>
+    <%end%>
+    <%= form.submit "Submit rating"%>
+  <%end%>
 <%end%>
 
 <%= link_to 'Edit', edit_movie_path(@movie) %> |
