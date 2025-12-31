@@ -39,7 +39,7 @@
     <p>No one rated yet.</p>
   <%end%>
 </div>
-<% if @movie.ratings.includes(current_user)%>
+<% if @movie.ratings.exists?(current_user.id)%>
   <p>Your Rating is <strong><%= @movie.ratings.find_by(user_id: current_user.id).score%></strong></p>
   <% rating = @movie.ratings.find_by(user_id: current_user.id)%>
   <%= form_with model: [@movie, rating] do |form| %>
@@ -60,5 +60,30 @@
   <%end%>
 <%end%>
 
+<% if @movie.comments.any? %>
+  <div>
+    <%= link_to "See Reviews", movie_comments_path(@movie)%>
+  </div>
+<%end%>
+
+<% if @movie.comments.exists?(current_user.id)%>
+  <p>Your Review </p>
+  <div>
+    <ul>
+      <li>
+        <%= @movie.comments.find_by(user_id: current_user.id).body%>
+      </li>
+    </ul>
+  </div>
+<%else%>
+  <strong>Post a review</strong>
+  <div>
+    <%= form_with model: [@movie, Comment.new] do |form| %>
+      <%= form.text_area :body, rows:3%>
+      <br>
+      <%= form.submit "Submit Review"%>
+    <%end%>
+  </div>
+<%end%>
 <%= link_to 'Edit', edit_movie_path(@movie) %> |
 <%= link_to 'Back', movies_path %>

@@ -1,0 +1,7 @@
+<div>
+    <%= form_with model: [movie, comment] do |form| %>
+        <%= form.text_area :body, rows:3%>
+        <br>
+        <%= form.submit "Submit Review"%>
+    <%end%>
+</div>
