@@ -4,11 +4,14 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    if user.persisted?
-      can :read, :all
-      can :update, Comment, user_id:user.id
-      can :update, Rating, user_id:user.id
-      can :destroy, Comment, user_id:user.id
+    return unless user.persisted?
+
+    if user.email == "admin@gmail.com"
+      can :manage, :all
+    else
+      can :read, Movie
+      can :create, Comment
+      can [:update, :destroy], Comment, user_id: user.id
     end
     # Define abilities for the user here. For example:
     #

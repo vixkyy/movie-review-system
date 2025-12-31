@@ -1,19 +1,19 @@
 class CommentsController < ApplicationController
   before_action :set_movie
-  before_action :set_comment, only:[:edit,:update,:destroy]
+  before_action :set_comment, only: %i[edit update destroy]
 
   def index
-    @comments = @movie.comments
+    @pagy, @comments = pagy(@movie.comments, items: 20)
   end
-   
+
   def create
     @comment = @movie.comments.new(comment_params)
     @comment.user = current_user
     if @comment.save
-      redirect_to movie_path(@movie), notice: "posted successfully"
-    else 
-      redirect_to movie_path(@movie), alert: "something went wrong"
-    end 
+      redirect_to movie_path(@movie), notice: 'posted successfully'
+    else
+      redirect_to movie_path(@movie), alert: 'something went wrong'
+    end
   end
 
   def edit
@@ -26,19 +26,20 @@ class CommentsController < ApplicationController
   def update
     authorize! :update, @comment
     if @comment.update(comment_params)
-      redirect_to movie_path(@movie), notice: "updated successfully"
+      redirect_to movie_path(@movie), notice: 'updated successfully'
     else
-      redirect_to movie_path(@movie), alert: "something went wrong"
+      redirect_to movie_path(@movie), alert: 'something went wrong'
     end
   end
-  
+
   def destroy
     authorize! :destroy, @comment
-    @comment.destroy 
-    redirect_to movie_comments_path(@movie), notice: "destroyed successfully"
+    @comment.destroy
+    redirect_to movie_comments_path(@movie), notice: 'destroyed successfully'
   end
 
-  private 
+  private
+
   def set_movie
     @movie = Movie.find(params[:movie_id])
   end

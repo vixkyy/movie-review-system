@@ -1,5 +1,19 @@
 <p id="notice"><%= notice %></p>
 
+<div>
+  <h1>Filter</h1>
+
+  <%= form_with url: movies_path, method: :get do |form|%>
+    <%= form.label :title, "Search by Movie Name"%>
+    <%= form.text_field :title%>
+
+    <%= form.label :date, "Search by Release Date"%>
+    <%= form.date_field :date%>
+
+    <%= form.submit "Filter"%>
+  <%end%>
+</div>
+
 <h1>Movies</h1>
 
 <table>
@@ -21,7 +35,7 @@
         <td><%= movie.release_date %></td>
         <td><%= movie.director %></td>
         <td><%= movie.actor %></td>
-        <td><%= movie.ratings.average(:score).round(1) if movie.ratings.any? %></td>
+        <td><%= movie.ratings_average%></td>
         <td><%= link_to 'Show', movie %></td>
         <td><%= link_to 'Edit', edit_movie_path(movie) %></td>
         <td><%= link_to 'Destroy', movie, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -32,4 +46,7 @@
 
 <br>
 
-<%= link_to 'New Movie', new_movie_path %>
+<%== pagy_nav(@pagy)%>
+<% if can? :create, Movie %>
+  <%= link_to 'New Movie', new_movie_path %>
+<%end%>
