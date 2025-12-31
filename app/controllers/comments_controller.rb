@@ -3,7 +3,7 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: %i[edit update destroy]
 
   def index
-    @pagy, @comments = pagy(@movie.comments, items: 20)
+    @pagy, @comments = pagy(@movie.comments.includes(:user), items: 20)
   end
 
   def create
