@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_movie
+  before_action :set_comment, only:[:edit,:update,:destroy]
 
   def index
     @comments = @movie.comments
@@ -16,14 +17,14 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    @comment = @movie.comments.find(params[:id])
+    authorize! :update, @comment
     respond_to do |format|
       format.js
     end
   end
 
   def update
-    @comment = @movie.comments.find(params[:id])
+    authorize! :update, @comment
     if @comment.update(comment_params)
       redirect_to movie_path(@movie), notice: "updated successfully"
     else
@@ -32,7 +33,7 @@ class CommentsController < ApplicationController
   end
   
   def destroy
-    @comment = @movie.comments.find(params[:id])
+    authorize! :destroy, @comment
     @comment.destroy 
     redirect_to movie_comments_path(@movie), notice: "destroyed successfully"
   end
@@ -40,6 +41,10 @@ class CommentsController < ApplicationController
   private 
   def set_movie
     @movie = Movie.find(params[:movie_id])
+  end
+
+  def set_comment
+    @comment = @movie.comments.find(params[:id])
   end
 
   def comment_params

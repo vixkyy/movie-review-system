@@ -2,6 +2,7 @@ class RatingsController < ApplicationController
   before_action :set_movie
   def create
     @rating = @movie.ratings.new(rating_params)
+    @rating.user_id = current_user.id
     if @rating.save 
       redirect_to movie_path(@movie), notice: "Rating is successfully"
     else 

@@ -39,7 +39,7 @@
     <p>No one rated yet.</p>
   <%end%>
 </div>
-<% if @movie.ratings.exists?(current_user.id)%>
+<% if @movie.ratings.exists?(user_id: current_user.id)%>
   <p>Your Rating is <strong><%= @movie.ratings.find_by(user_id: current_user.id).score%></strong></p>
   <% rating = @movie.ratings.find_by(user_id: current_user.id)%>
   <%= form_with model: [@movie, rating] do |form| %>
@@ -66,7 +66,7 @@
   </div>
 <%end%>
 
-<% if @movie.comments.exists?(current_user.id)%>
+<% if @movie.comments.exists?(user_id: current_user.id)%>
   <p>Your Review </p>
   <div>
     <ul>

@@ -17,7 +17,12 @@
         <td><%= comment.user.email %></td>
         <td><%= comment.body %></td>
         <td>
-            <%= link_to "Edit review", edit_movie_comment_path(@movie, comment), remote: true, local: false%>
+            <% if can? :update, comment%>
+                <%= link_to "Edit review", edit_movie_comment_path(@movie, comment), remote: true, local: false%>
+            <%end%>
+            <% if can? :destroy, comment %>
+                <%= link_to "Delete review", movie_comment_path(@movie,comment), method: :delete%>
+            <%end%>
         </td>
       </tr>
     <% end %>
