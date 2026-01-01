@@ -1,0 +1,48 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-md-8">
+      <h1 class="fw-bold mb-4 text-light">Reviews</h1>
+
+      <div class="table-responsive">
+        <table class="table table-dark table-hover table-bordered border-secondary align-middle">
+          <thead>
+            <tr>
+              <th class="fw-semibold">Author</th>
+              <th class="fw-semibold">Review</th>
+              <th class="fw-semibold text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @comments.each do |comment| %>
+              <tr>
+                <td class="fw-semibold">
+                  <%= comment.user.email %>
+                </td>
+
+                <td class="text-wrap">
+                  <%= comment.body %>
+                </td>
+
+                <td class="text-center">
+                  <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    <% if can? :update, comment %>
+                      <%= link_to "Edit",edit_movie_comment_path(@movie, comment),remote: true,local: false,class: "btn btn-secondary text-light" %>
+                    <% end %>
+
+                    <% if can? :destroy, comment %>
+                      <%= link_to "Delete",movie_comment_path(@movie, comment),method: :delete,data: { confirm: "Are you sure?" },class: "btn btn-danger text-dark" %>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <%== pagy_bootstrap_nav(@pagy) %>
+        <%= link_to "Back",movie_path(@movie),class: "btn text-dark btn-light" %>
+      </div>
+    </div>
+  </div>
+</div>
