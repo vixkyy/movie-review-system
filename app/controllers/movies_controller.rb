@@ -3,14 +3,12 @@ class MoviesController < ApplicationController
 
   # GET /movies or /movies.json
   def index
-    if params[:date].present? && params[:title].present?
-      @pagy, @movies = pagy(Movie.search(params[:title]).filter_days(params[:date]).order(ratings_average: :desc), items: 20)
-    elsif params[:date].present? 
-      @pagy, @movies = pagy(Movie.filter_days(params[:date]).order(ratings_average: :desc), items: 20)
+    if params[:date].present? 
+      @pagy, @movies = pagy(Movie.filter_days(params[:date]).order(ratings_average: :desc).includes(image_attachment: :blob), items: 20)
     elsif params[:title].present?
-      @pagy, @movies = pagy(Movie.search(params[:title]).order(ratings_average: :desc), items: 20)
+      @pagy, @movies = pagy(Movie.search(params[:title]).order(ratings_average: :desc).includes(image_attachment: :blob), items: 20)
     else
-      @pagy, @movies = pagy(Movie.order(ratings_average: :desc), items: 20)
+      @pagy, @movies = pagy(Movie.order(ratings_average: :desc).includes(image_attachment: :blob), items: 20)
     end
   end
 

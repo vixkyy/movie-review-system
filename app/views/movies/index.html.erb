@@ -1,52 +1,77 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid px-4 mt-4">
+  <div class="row align-items-start">
+    <div class="col-md-8">
+  <h1 class="fw-bold text-light ms-2 mb-4">Movies</h1>
+    </div>
+    <div class="col-md-4">
+      <div class="border border-light rounded bg-dark p-3">
+        <h5 class="fw-bold text-warning mb-3">Find your favorite</h5>
+        <%= form_with url: movies_path, method: :get, local: true do |form| %>
+          <div class="mb-3">
+            <%= form.label :title, "Search by Movie Name",class: "form-label text-light fw-semibold" %>
+            <div class="d-flex gap-5">
+              <%= form.text_field :title,class: "form-control " %>
+              <%= form.submit "Search",class: "btn btn-success fw-semibold btn-sm ps-3 pe-3" %>
+            </div>
+          </div>
+          <div class="mb-2">
+            <%= form.label :date, "Search by Release Date",class: "form-label text-light fw-semibold" %>
+            <div class="d-flex gap-5">
+              <%= form.date_field :date,class: "form-control" %>
+              <%= form.submit "Search",class: "btn btn-success fw-semibold btn-sm ps-3 pe-3" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
 
-<div>
-  <h1>Filter</h1>
-
-  <%= form_with url: movies_path, method: :get do |form|%>
-    <%= form.label :title, "Search by Movie Name"%>
-    <%= form.text_field :title%>
-
-    <%= form.label :date, "Search by Release Date"%>
-    <%= form.date_field :date%>
-
-    <%= form.submit "Filter"%>
-  <%end%>
+  </div>
 </div>
 
-<h1>Movies</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Release date</th>
-      <th>Director</th>
-      <th>Actor</th>
-      <th>Average Ratings</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
+<div class="container-fluid ps-4 pe-4 mt-4">
+  <div class="row g-4">
     <% @movies.each do |movie| %>
-      <tr>
-        <td><%= movie.name %></td>
-        <td><%= movie.release_date %></td>
-        <td><%= movie.director %></td>
-        <td><%= movie.actor %></td>
-        <td><%= movie.ratings_average%></td>
-        <td><%= link_to 'Show', movie %></td>
-        <td><%= link_to 'Edit', edit_movie_path(movie) %></td>
-        <td><%= link_to 'Destroy', movie, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+        <div class="card h-100 bg-dark border border-secondary">
+          <%= image_tag(movie.image.attached? ? movie.image : "image.png",class:"card-img-top",style:"height: 320px;object-fit: cover;") %>
+          <div class="card-body bg-dark d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h6 class="fw-bold text-light mb-0">
+                <%= movie.name %>
+              </h6>
+              <span class="text-warning fw-semibold">
+                 <%= movie.ratings_average %>
+              </span>
+            </div>
+            <p class="text-secondary small mb-1">
+              <strong>Actor:</strong> <%= movie.actor %>
+            </p>
+            <p class="text-secondary small mb-3">
+              <strong>Director:</strong> <%= movie.director %>
+            </p>
+            <div class="mt-auto d-flex justify-content-between">
+              <%= link_to "Show",movie,class: "btn btn-success btn-md text-light fw-semibold" %>
+              <% if can? :update, movie %>
+                <%= link_to "Edit",edit_movie_path(movie),class: "btn btn-outline-secondary btn-sm" %>
+              <% end %>
+              <% if can? :destroy, movie %>
+                <%= link_to "Delete",movie,method: :delete,data: { confirm: "Are you sure?" },class: "btn btn-outline-danger btn-sm" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </tbody>
-</table>
 
-<br>
+  </div>
 
-<%== pagy_nav(@pagy)%>
-<% if can? :create, Movie %>
-  <%= link_to 'New Movie', new_movie_path %>
-<%end%>
+  <div class="d-flex justify-content-center mt-5">
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+
+  <% if can? :create, Movie %>
+    <div class="text-start mt-4 mb-5">
+      <%= link_to "New Movie",new_movie_path,class: "btn btn-success fw-bold text-dark" %>
+    </div>
+  <% end %>
+</div>

@@ -1,5 +1,5 @@
 class Rating < ApplicationRecord
-  after_create_commit :calc_ratings
+  after_commit :calc_ratings
   belongs_to :movie
   belongs_to :user
 
