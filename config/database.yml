@@ -81,6 +81,6 @@ test:
 #
 production:
   <<: *default
-  database: movie_review_system_production
-  username: movie_review_system
-  password: <%= ENV['MOVIE_REVIEW_SYSTEM_DATABASE_PASSWORD'] %>
+  # Rails will use the DATABASE_URL environment variable if it's set.
+  # This is the standard way to connect to databases on Render.
+  url: <%= ENV['DATABASE_URL'] %>
