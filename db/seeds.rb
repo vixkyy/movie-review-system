@@ -459,3 +459,7 @@ Rating.create!([
 ])
 
 puts "--- DONE: Database Cleared and Successfully Seeded! ---"
+
+ActiveRecord::Base.connection.tables.each { |t| ActiveRecord::Base.connection.reset_pk_sequence!(t) }
+
+puts "record has been serialized"
