@@ -37,12 +37,7 @@
           <div class="card-body bg-dark d-flex flex-column">
             <div class="d-flex justify-content-between align-items-start mb-2">
               <h6 class="fw-bold text-light mb-0">
-                <% finalname = "" %>
-                <% moviename = movie.name.split(" ") %>
-                <% moviename.each do |mn| %>
-                  <% finalname += "#{mn.capitalize} " %>
-                <% end %>
-                <%= finalname.strip %>
+                <%= movie.name%>
               </h6>
               <span class="text-warning fw-semibold">
                  <%= movie.ratings_average %>

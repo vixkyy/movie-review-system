@@ -1,11 +1,11 @@
 class Movie < ApplicationRecord
-  before_save :lowercase
   scope :filter_days, -> (date) {
     where(release_date: date)
   }
   scope :search, -> (title){
-    where(name: title.downcase)
+    where("LOWER(name) = ?", title.downcase)
   }
+  
   validates :name, presence: true
   validates :release_date, presence: true
   validates :director, presence: true
@@ -14,10 +14,4 @@ class Movie < ApplicationRecord
   has_one_attached :image
   has_many :ratings, dependent: :destroy
   has_many :comments, dependent: :destroy
-
-  private
-
-  def lowercase
-    self.name = self.name.downcase
-  end
 end
